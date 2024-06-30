@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block styles %}
+  {{super()}}
+  <link rel="stylesheet"
+        href="{{url_for('.static', filename='css/styles.css')}}">
+{% endblock %}
+
+{% block content %}
+<main class="bg">
+  <div class="welcome-msg">
+    {% if not current_user.is_authenticated %}
+      <h1>Welcome to To-do Manager!</h1>
+      <br>
+      <br>
+      <h4>You can use it for managing a variety of things including</h4>
+      <h4>To-do lists / Shopping lists / Goals / Items-to-Pack / Wishlists etc.</h4>
+      <br>
+      <br>
+      <a class="btn-lg btn-primary custom-submit-btn" href="{{ url_for('login') }}">LOG IN</a>
+      <a class="btn-lg btn-success custom-submit-btn" href="{{ url_for('register') }}">SIGN UP</a>
+    {% else %}
+      <h1>Welcome back to To-do Manager! </h1>
+      <br>
+      <br>
+      <h4>What are you going to do today?</h4>
+      <h4>Let's create a new To-do list for today, or manage your ongoing To-do lists now!</h4>
+      <br>
+      <br>
+      <a class="btn-lg btn-secondary tp-btn" href="{{ url_for('new_list') }}">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"></path>
+        </svg>
+        Create a new list
+      </a>
+      <a class="btn-lg btn-success tp-btn" href="{{ url_for('mylists') }}">My Lists</a>
+    {% endif %}
+  </div>
+</main>
+{% endblock %}

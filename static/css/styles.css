@@ -1,0 +1,626 @@
+/* 
+This CSS file will need to be added to the styling of your web pages for the styles to be rendered. 
+colorhunt: https://colorhunt.co/palette/ffe6e6e1afd1ad88c67469b6
+*/
+
+.logo {
+    font-family: "Copperplate";
+    font-size: 34px;;
+    color: white;
+    opacity: 12%; 
+    text-shadow: 3px 3px 5px rgba(255, 255, 255, 0.6);
+}
+body {
+    font-family: "Helvetica Neue", "Lucida Grande", sans-serif, "Microsoft YaHei", "PingFang SC", "Heiti SC", "Gen Jyuu Gothic";
+    font-size: 22px;
+    color: whitesmoke;
+}
+nav.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 50px;
+    z-index: 1000;
+}
+.content {
+    overflow-y: auto;
+    height: 100%;
+}
+
+.bg {
+    background: linear-gradient(to bottom right, #26355D, #AF47D2, #FF8F00, #FFDB00);
+    background-color: #26355D;
+    margin: 0;
+    height: 100vh;
+}
+header {
+    position: fixed;
+    top: 50px;
+    height: 80px;
+}
+.flex-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    color: white;
+    justify-content: flex-start;
+}
+
+.margin-custom {
+    margin: 50px 8px;
+}
+
+
+.welcome-msg {
+    text-align: center; 
+    color: whitesmoke;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+    padding-top: 360px; 
+}
+
+.d-flex {
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+.nav-item {
+    font-size: 18px;
+    padding-right: 10px;
+}
+
+
+.sidebar {
+    position: fixed;
+    display: flex;
+    top: 50px;
+    width: 21%;
+    transition: width 0.3s;
+    flex-direction: column;
+    flex-shrink: 0; 
+    background: linear-gradient(to bottom, rgba(38, 53, 93, 0.3), rgba(38, 53, 93, 0.8));
+    color: #B5C0D0;
+    font-size: 20px;
+    height: 100%;
+    z-index: 999;
+}
+.sidebar-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    border-bottom: 1px solid #eee;
+    padding: 18px 20px;
+}
+.sidebar-add-btn {
+    display: flex-end; 
+    margin-left: 180px; 
+    padding-bottom: 5px; 
+    color: whitesmoke;
+    padding: 5px 8px 8px 8px;
+}
+.sidebar-add-btn:hover {
+    background-color: rgba(0, 0, 0, 0.6);
+    color: whitesmoke;
+}
+.sidebar ul {
+    list-style: none;
+    overflow-y: auto; /* scrollable */
+}
+.sidebar li {
+    width: 100%;
+    padding: 8px 15px;
+    
+}
+
+.task-cnt1 {
+    width: 40px;
+    height: 24px;
+    background-color: hsla(0, 0%, 100%, 0.182);
+    color: #FFDB00;
+    font: Arial;
+    font-size: 16px;
+    padding: 1px 12px;
+    border-radius: 15px;
+    margin-left: 15px; 
+    font-weight: bold; 
+}
+.task-cnt2 {
+    width: 40px;
+    height: 24px;
+    background-color: hsla(0, 0%, 100%, 0.182);
+    color: whitesmoke;
+    font: Arial;
+    font-size: 16px;
+    padding: 1px 12px;
+    border-radius: 15px;
+    margin-left: 15px; 
+    font-weight: bold; 
+}
+
+.sidebar.collapsed {
+    width:0;
+    overflow: hidden;
+}
+.sidebar-ul {
+    list-style: none;
+    padding: 0px;
+    margin-top: 30px;
+}
+.sidebar-lname {
+    font-size: 18px;
+    color: #B5C0D0;
+    justify-content: space-between;
+    display: flex;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.3s ease;
+    cursor: pointer;
+}
+.sidebar-lname-current {
+    font-size: 18px;
+    background: linear-gradient(to bottom, #FFDB00, #AF47D2, #FF8F00,  #FFDB00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.6);
+
+    justify-content: space-between;
+    display: flex;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.3s ease;
+    cursor: pointer;
+}
+
+.sidebar-lname:hover {
+    color: whitesmoke;
+}
+.task-content {
+    position: relative;
+    margin-left: 21%;
+    transition: margin-left 0.3s;
+}
+.task-content.collapsed {
+    margin-left:0;
+}
+
+li.side-list:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+li.side-list-current {
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #FFDB00; 
+}
+
+#listName.item-align1 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #26355D;
+    transition: background-color 0.3s ease;
+    color: whitesmoke;
+    padding-right: 40px;
+    width: 100%;
+} 
+#listName.item-align {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #26355D;
+    transition: background-color 0.3s ease;
+    color: whitesmoke;
+    padding-right: 40px;
+    width: 79%;  /* sidebar: width: 21%;*/
+} 
+
+/* ================================== lists.html page settings ================================== */
+ul.main-list {
+    position: fixed;
+    top: 250px; 
+    list-style-type: none;
+    padding: 10px 0;
+    margin: 0 100px;
+    overflow-y: auto;
+}
+
+.main-list li {
+    display: flex;
+    align-items: center;
+    justify-self: center;
+    padding: 10px 20px;
+    border: 2px solid #eef0f5;
+    font-size: 16px;
+    zoom: 1;
+    position: relative;
+    margin: 10px;
+    border-radius: 30px;
+    float: left;
+}
+.main-list li:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color:#AF47D2;
+}
+
+.mylist-lname {
+    font-size: 22px;
+    color: whitesmoke;
+    font-weight: bold;
+    padding: 0 10px;
+    display: flex;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.3s ease;
+    cursor: pointer;
+}
+a.mylist-lname:hover {
+    color: #26355D;
+    opacity: 80%;
+}
+.mylist-btns {
+    display: flex;
+    justify-content: flex-end;
+    margin-left: 40px;
+}
+.mylist-task-cnt {
+    display: inline-block;
+    width: 60px;
+    height: 40px;
+    background-color: hsla(0, 0%, 100%, 0.182);
+    color: #fff;
+    font: Arial;
+    font-size: 20px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+
+
+#listName.list {
+    position: relative;
+    padding: 10px 200px;
+}
+#listName.edit-tools-bar {
+    color: white;
+    cursor: pointer;
+    padding: 0 100px;
+}
+#listName .new-list {
+    font-family: Arial;
+    color: white;
+    font-size: 20px;
+    justify-content: flex-end;
+    padding: auto;
+    margin-left: auto;
+    margin-right: 50px;
+}
+@media only screen and (min-width: 770px){
+    #listName .hide {
+        visibility: hidden;
+        display: inline-block;
+    }
+    #listName:hover .hide {
+        visibility:visible;
+    }
+    #listName:hover {
+        background-color: rgba(38, 53, 93, 0.8);
+    }
+}
+
+
+#flash-msg-div {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: rgba(255, 255, 255, 0.8);
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 24px;
+    top: 130px; /* navbar:50px, header:80px; */
+    height: 60px;
+    width: 100%;
+    padding-left: 80px;
+}
+#flash-messages #default-msg {
+    display: flex;
+    align-items: center;
+}
+.success {
+    font-size: 24px;
+    color: #1ccb31;
+    text-shadow: 0 0 2px black;
+}
+.success-clear {
+    font-size: 24px;
+    color: #1ccb31;
+}
+.alert {
+    font-size: 24px;
+    color: rgb(255, 0, 0);
+    text-shadow: 0 0 2px black;
+}
+.alert-clear {
+    font-size: 24px;
+    color: rgb(255, 0, 0);
+}
+.flash-msg button, .del-hint-btn button {
+    background-color: transparent;
+    border: none;
+    float: right;
+    cursor: pointer;
+    margin-left: 50px;
+}
+
+
+.tp-btn {
+    width: 400px;
+    font-size: 32px;
+    padding: 20px 40px;
+    color: white;
+    margin: 0 10px;
+}
+.custom-submit-btn {
+    display: inline-block;
+    width: 300px;
+    font-size: 24px;
+    padding: 15px;
+    margin: 0 10px;
+}
+.custom-submit-btn2 {
+    display: inline-block;
+    width: 280px;
+    font-size: 22px;
+    justify-content: center;
+    padding: 10px 15px;
+}
+
+
+#newTask {
+    position: fixed;
+    top: 130px;  /* navbar 50px header 80px */
+    width: 100%;
+}
+
+div.new-task input {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: white;
+    color: lightblue;
+    font-size: 42px;
+    height: 90px;;
+    padding-left: 50px;
+    width: 100%;
+}
+div.new-task input::placeholder {
+    color:#B5C0D0;
+}
+
+
+.task-list {
+    position: fixed;
+    top: 220px;
+    margin-top: 40px;
+    list-style: none;
+    width: 79%;
+    overflow-y: auto;
+    height:100%;
+}
+.edit_task {
+    align-items: center;
+    height: 8vh;
+}
+#taskName {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+#taskName:hover {
+    background-color: rgba(255, 255, 255, 0.35);
+}
+#taskName .hide {
+    visibility: hidden;
+    display: inline-block;
+}
+#taskName:hover .hide {
+    visibility:visible;
+}
+
+.completed-task {
+    color: rgba(255, 255, 255, 0.65);
+    text-decoration: line-through;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-bottom: 1px solid whitesmoke;
+}
+.grayout-task {
+    opacity: 50%;
+}
+
+input.star {
+    display: none;
+}
+.favorit-checkbox {
+    display: flex;
+    position: relative;
+    border: none;
+    background-color: none;
+    color: whitesmoke;
+    /* opacity: 0.6; */
+}
+
+.checkbox {
+    display: flex;
+    position: relative;
+    width: 30px;
+    height: 30px;
+    margin-left: 120px;
+    margin-right: 20px;
+    
+    appearance: none;
+    border: 2px solid whitesmoke;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.checkbox:checked {
+    background-color: #87A922;
+    border: 2px solid black;
+    opacity: 60%;
+}
+.checkbox:checked::after {
+    content: '';
+    position: absolute;
+    left: 8px;
+    width: 10px;
+    height: 20px;
+    border: solid black;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.due-date {
+    display: inline-block;
+    width: 150px;
+    height: 25px;
+    background-color: hsla(0, 0%, 100%, 0.5);
+    color: #666;
+    font-size: 14px;
+    padding: 4px 10px;
+    border-radius: 25px;
+    margin-left: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+.due-date-input {
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    color: #666;
+    border: none;
+    outline: none;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+}
+.due-date-input ::placeholder {
+    color: #fff;
+    opacity: 0.6;
+    text-align: center;
+}
+.task-tools {
+    display: flex;
+    justify-content: space-evenly;
+    margin-left: auto;
+    margin-right: 120px;
+}
+.del-task {
+    margin-left: 30px; 
+    color: whitesmoke;
+}
+
+
+/* Setting for Login & Register Page */
+.form-group {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 15px;
+}
+.form-group label {
+    margin-right: 10px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    width: 120px;
+    font-size: 24px;
+}
+.form-control {
+    flex-grow: 1;
+    display: block;
+    width: 300px;
+}
+.filled {
+    background: none;
+}
+
+.center-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
+}
+.login-register {
+    width: 800px;
+    height: 100px;
+    align-items: center; 
+    margin: auto;
+    padding-top: 20px;
+}
+.lname {
+    font-size: 28px;
+    color: white;
+    justify-content: space-between;
+    display: flex;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.3s ease;
+    cursor: pointer;
+}
+.lname-box {
+    display: flex;
+    align-items: center;
+}
+.l-title {
+    align-items: center;
+    color: white;
+    justify-content: flex-start;
+    display: flex;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.3s ease;
+    margin-left: 40px;
+}
+.lname:hover {
+    color:rgb(187, 187, 253);
+}
+#ListNameDisplay {
+    background: linear-gradient(to bottom, #FFDB00, #AF47D2, #FF8F00,  #FFDB00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.6);
+}
+.task-cnt {
+    display: inline-block;
+    width: 60px;
+    height: 40px;
+    background-color: hsla(0, 0%, 100%, 0.182);
+    color: #fff;
+    font: Arial;
+    font-size: 24px;
+    padding: 4px 10px;
+    border-radius: 25px;
+    margin-left: 20px; 
+    font-weight: bold;
+}
+.list-info {
+    font-size: 16px;
+    color: lightgray;
+    align-items: center;
+    margin-left: 50px;
+}
+.edit-tools {
+    background-color: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+.edit-tools svg {
+    fill: white;
+}
+.edit-tools:hover svg {
+    fill: aliceblue;
+}
+li.list-box {
+    padding-bottom: 20px;
+}

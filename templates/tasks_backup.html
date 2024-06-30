@@ -1,0 +1,246 @@
+{% extends 'base.html' %}
+{% import "bootstrap/wtf.html" as wtf%}
+
+{% block styles %}
+  {{super()}}
+  <link rel="stylesheet" href="{{url_for('.static', filename='css/styles.css')}}">
+{% endblock %}
+
+{% block title %}Create A New Board</A>{% endblock %}
+
+{% block content %}
+<main class="bg">
+    <!-- to-do list 侧边栏 -->
+    <div id="listSidebar" class="col-4">
+      <div class="d-flex">
+        <svg class="bi pe-none me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+        <span class="fs-4">Sidebar</span>
+      </div>
+      <ul class="sidebar-ul">
+        {% if all_list %}
+          {% for list in all_list[::-1] %}
+          <li>
+            <div>
+              <div>
+                <a href="{{ url_for('new_task', url_key=list.url_key) }}">{{ list.name }}</a>
+                <span>{{ list.task_cnt }}</span>
+              </div>
+            </div>
+          </li>
+          {% endfor %} 
+        {% else %} 
+          <div>
+            <p >There's no list yet. Let's create a new one!!</p>
+          </div>
+        {% endif %} 
+      </ul>
+    </div>
+
+    <!-- task显示区域 -->
+    <div class="task-content col-8">
+      <header id="listName" class="item-align">
+        <form class="l-title" action="{{ url_for('edit_l_name', url_key=list.url_key )}}" method="post">
+          {{ form.hidden_tag() }}
+          <h2 id="ListNameDisplay">{{ list.name }}</h2>
+          <span class="task-cnt text-center m-3">{{ list.task_cnt }}</span>
+          <input type="text" name="new-name" id="ListNameEdit" class="form-control" style="display: none;" value="{{ list.name }}">
+          <input type="submit" style="display: none">
+        </form>
+
+        <div class="hide m-3" onclick="editListName()">
+          <i>
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+              <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+            </svg>
+          </i>
+        </div>
+
+        <div class="edit-tools-bar">
+          <!-- Archive list -->
+          <a type="button" class="btn btn-outline-secondary del-list-btn hide" href="{{ url_for('archive_list', url_key=list.url_key) }}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-archive" viewBox="0 0 16 16">
+              <path d="M0 2a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 12.5V5a1 1 0 0 1-1-1V2zm2 3v7.5A1.5 1.5 0 0 0 3.5 14h9a1.5 1.5 0 0 0 1.5-1.5V5H2zm13-3H1v2h14V2zM5 7.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
+            </svg>
+          </a>
+
+          <!-- Delete list -->
+          <a type="button" class="btn btn-outline-secondary del-list-btn hide" href="{{ url_for('del_list', url_key=list.url_key) }}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+              <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"></path>
+              <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"></path>
+            </svg>
+          </a>
+
+        </div>
+      </header>
+
+      <div id="flash-msg-div" class="flash-msg text-center {% if get_flashed_messages(category_filter=['success']) %}success{% endif %}">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div id="flash-messages" class="{% if category =='success' %}success{% else %}alert{% endif %}">
+                <span class="flash-message">{{ message }}</span>
+                {% if category != 'success' %}
+                <button class="close-btn" onclick="closeFlashMessage()">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                  </svg>
+                </button>
+                {% endif %}
+              </div>
+            {% endfor %}
+          {% else %}
+            <div id="default-msg" class="d-flex">
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-exclamation-circle" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
+              </svg>
+              <p style="padding: 15px 0 0 15px;">Create tasks below, Hit Enter key to submit.</p>
+            </div>
+          {% endif %}
+        {% endwith %}
+      </div>
+
+      <div id="newTask" class="new-task no-border">
+        <form id="taskForm" name="taskform" action="{{ url_for('new_task', url_key=list.url_key) }}" method="post">
+          {{ form.hidden_tag() }}
+          {{ form.name(id="taskInput", class="form-control", placeholder="Type here e.g. mtg vs Mr.Yamada @12:00") }}
+          {{ form.submit(type="submit", style="display: none;") }}
+        </form>
+      </div>
+
+      {% if all_task %}
+        <ul class="task-list">
+
+            <!-- 未完成 & 星号的task -->
+            {% for task in all_task[::-1] %}
+              {% if task.favorit and not task.status %}
+                <li id="taskName">
+                  <div class="flex-container">
+                    <!-- 添加完成勾选框 -->
+                    <form class="complete-task" action="{{ url_for('complete', url_key=list.url_key, id=task.id)}}">
+                      {{ form.hidden_tag() }}
+                      {{ form.status(class="checkbox") }}
+                    </form>
+
+                    <!-- 添加星号 -->
+                    <div class="stared p-3">
+                      <a data-hint="Star task" href="{{ url_for('check_favorit', url_key=list.url_key, id=task.id) }}">
+                        <span class="input-group-text" id="basic-addon1">
+                          {% if task.favorit == True %}
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                            <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                          </svg>
+                          {% else %}
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
+                            <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+                          </svg>
+                          {% endif %}
+                        </span>
+                      </a>
+                    </div>
+
+                    <!-- 编辑人物名称按钮：鼠标显示 -->
+                    <form action="{{ url_for('edit_t_name', url_key=list.url_key, id=task.id )}}" method="post">
+                      {{ form.hidden_tag() }}
+                      <h2 id="taskNameDisplay" class="new-t-name task-name p-3">{{ task.name }}</h2>
+                      <input type="text" name="new-t-name" id="taskNameEdit" class="form-control" style="display: none;" value="{{ task.name }}">
+                      <input type="submit" style="display: none">
+                    </form>
+                    <div class="hide" onclick="editTaskName()">
+                      <i>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                          <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                        </svg>
+                      </i>
+                    </div>
+
+                    <!-- 添加期限 -->
+                    <form class="due-date" id="newDate" data-hint="Add a due date" action="{{ url_for('new_date', url_key=list.url_key, id=task.id) }}" method="post">
+                      {{ form.hidden_tag() }}
+                      {% if not task.due_date %}
+                        {{ form.due_date(placeholder="No Due Date", id="due_date") }}
+                      {% else %}
+                        {{ form.due_date(placeholder=task.due_date, id="due_date") }}
+                      {% endif %}
+
+                    <!-- 删除任务按钮：鼠标显示 -->
+                    <a class="hide" data-hint="Delete Task" href="{{ url_for('del_task', url_key=list.url_key, id=task.id) }}" data-confirm="Are you sure you want to delete this task??" >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                      </svg>
+                    </a>
+                  </div>
+                  <hr>
+                </li>
+              {% endif %}
+            {% endfor %}  
+
+          <!-- 未完成 & 非星号的task -->
+          {% for task in all_task %}
+            {% if not task.favorit and not task.status %}
+            <li id="taskName">
+              <form class="new_date" id="newDate" data-hint="Add a due date" action="{{ url_for('new_date', url_key=list.url_key, id=task.id) }}" method="post">
+                {{ form.hidden_tag() }}
+                <div class="flex-container">
+                  {{ form.status(class="checkbox") }}
+                  <div class="stared p-3">
+                    <a data-hint="Star task" href="{{ url_for('check_favorit', url_key=list.url_key, id=task.id) }}">
+                      <span class="input-group-text" id="basic-addon1">
+                        {% if task.favorit == True %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                          <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                        </svg>
+                        {% else %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
+                          <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+                        </svg>
+                        {% endif %}
+                      </span>
+                    </a>
+                  </div>
+
+                  <form action="{{ url_for('edit_t_name', url_key=list.url_key, id=task.id )}}" method="post">
+                    {{ form.hidden_tag() }}
+                    <h2 id="nameDisplay" class="new-name task-name p-3">{{ task.name }}</h2>
+                    <input type="text" name="new-name" id="nameEdit" class="form-control" style="display: none;" value="{{ task.name }}">
+                    <input type="submit" style="display: none">
+                  </form>
+                  <div class="hide" onclick="editName()">
+                    <i>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                      </svg>
+                    </i>
+                  </div>
+
+                  <div class="due-date">
+                      {% if not task.due_date %}
+                        {{ form.due_date(placeholder="No Due Date", id="due_date") }}
+                      {% else %}
+                        {{ form.due_date(placeholder=task.due_date, id="due_date") }}
+                      {% endif %}
+                  </div>
+                  
+                  <div class="del-btn p-3" data-trigger="hover">
+                    <a data-hint="Delete Task" href="{{ url_for('del_task', url_key=list.url_key, id=task.id) }}">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              </form>
+              <hr>
+            </li>
+            {% endif %}
+            
+          {% endfor %}  
+        </ul>
+      {% else %}
+        <p class="task-list hp-desc">There's no task yet. Let create a new one!!</p>
+      {% endif %}
+    </div>
+  <!-- </div> -->
+</main>
+{% endblock %}

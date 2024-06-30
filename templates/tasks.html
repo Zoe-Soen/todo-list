@@ -1,0 +1,207 @@
+{% extends 'base.html' %}
+{% import "bootstrap/wtf.html" as wtf%}
+
+{% block styles %}
+  {{super()}}
+  <link rel="stylesheet" href="{{url_for('.static', filename='css/styles.css')}}">
+{% endblock %}
+
+{% block title %}Create A New Board</A>{% endblock %}
+
+{% block content %}
+<main class="bg">
+    <!-- Side menu bar for To-do list -->
+    <div id="listSidebar" class="sidebar">
+      <div class="sidebar-head">
+        <div class="d-flex">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-list-check" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3.854 2.146a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708L2 3.293l1.146-1.147a.5.5 0 0 1 .708 0zm0 4a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708L2 7.293l1.146-1.147a.5.5 0 0 1 .708 0zm0 4a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 0 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0z"/>
+          </svg>
+          <h4 style="padding:5px 0 0 10px; text-decoration: bold;">All Lists</h4>
+        </div>
+        <a href="{{ url_for('new_list') }}" class="sidebar-add-btn ml-auto">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-plus-circle-dotted" viewBox="0 0 16 16">
+            <path d="M8 0q-.264 0-.523.017l.064.998a7 7 0 0 1 .918 0l.064-.998A8 8 0 0 0 8 0M6.44.152q-.52.104-1.012.27l.321.948q.43-.147.884-.237L6.44.153zm4.132.271a8 8 0 0 0-1.011-.27l-.194.98q.453.09.884.237zm1.873.925a8 8 0 0 0-.906-.524l-.443.896q.413.205.793.459zM4.46.824q-.471.233-.905.524l.556.83a7 7 0 0 1 .793-.458zM2.725 1.985q-.394.346-.74.74l.752.66q.303-.345.648-.648zm11.29.74a8 8 0 0 0-.74-.74l-.66.752q.346.303.648.648zm1.161 1.735a8 8 0 0 0-.524-.905l-.83.556q.254.38.458.793l.896-.443zM1.348 3.555q-.292.433-.524.906l.896.443q.205-.413.459-.793zM.423 5.428a8 8 0 0 0-.27 1.011l.98.194q.09-.453.237-.884zM15.848 6.44a8 8 0 0 0-.27-1.012l-.948.321q.147.43.237.884zM.017 7.477a8 8 0 0 0 0 1.046l.998-.064a7 7 0 0 1 0-.918zM16 8a8 8 0 0 0-.017-.523l-.998.064a7 7 0 0 1 0 .918l.998.064A8 8 0 0 0 16 8M.152 9.56q.104.52.27 1.012l.948-.321a7 7 0 0 1-.237-.884l-.98.194zm15.425 1.012q.168-.493.27-1.011l-.98-.194q-.09.453-.237.884zM.824 11.54a8 8 0 0 0 .524.905l.83-.556a7 7 0 0 1-.458-.793zm13.828.905q.292-.434.524-.906l-.896-.443q-.205.413-.459.793zm-12.667.83q.346.394.74.74l.66-.752a7 7 0 0 1-.648-.648zm11.29.74q.394-.346.74-.74l-.752-.66q-.302.346-.648.648zm-1.735 1.161q.471-.233.905-.524l-.556-.83a7 7 0 0 1-.793.458zm-7.985-.524q.434.292.906.524l.443-.896a7 7 0 0 1-.793-.459zm1.873.925q.493.168 1.011.27l.194-.98a7 7 0 0 1-.884-.237zm4.132.271a8 8 0 0 0 1.012-.27l-.321-.948a7 7 0 0 1-.884.237l.194.98zm-2.083.135a8 8 0 0 0 1.046 0l-.064-.998a7 7 0 0 1-.918 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+          </svg>
+        </a>
+      </div>
+      <ul class="sidebar-ul">
+        {% if all_list %}
+          {% for side_list in all_list[::-1] %}
+            <a href="{{ url_for('new_task', url_key=side_list.url_key) }}">
+            {% if side_list.url_key == list.url_key %}
+              <li class="side-list-current">
+                <div class="d-flex">
+                  <span class="sidebar-lname-current">
+                    {% if side_list.name|length <= 38 %}
+                      {{ side_list.name }}
+                    {% else %}
+                      {{ side_list.name[:33] }}...
+                    {% endif %}
+                  </span>
+                  <span class="ml-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                    </svg>
+                  </span>
+                </div>
+              </li>
+            {% else %}
+              <li class="side-list">
+                <div class="d-flex">
+                  <span class="sidebar-lname">
+                    {% if side_list.name|length <= 38 %}
+                      {{ side_list.name }}
+                    {% else %}
+                      {{ side_list.name[:33] }}...
+                    {% endif %}
+                  </span>
+                  <span class="task-cnt2 text-center ml-auto">{{ side_list.task_cnt }}</span>
+                </div>
+              </li>
+            {% endif %}
+            </a>
+          {% endfor %} 
+        {% else %} 
+          <div>
+            <p >There's no list yet. Let's create a new one!!</p>
+          </div>
+        {% endif %} 
+      </ul>
+    </div>
+    <!-- Area for tasks -->
+    <div id="taskContent" class="task-content">
+      <header id="listName" class="item-align">
+        <form class="l-title p-3" action="{{ url_for('edit_l_name', url_key=list.url_key )}}" method="post">
+          {{ form.hidden_tag() }}
+          <h1 id="ListNameDisplay" style="margin-top: 8px;">{{ list.name }}</h1>
+          <input type="text" name="new-name" id="ListNameEdit" class="form-control" style="display: none;" value="{{ list.name }}">
+          <input type="submit" style="display: none">
+          <!-- Edit list name -->
+          <div class="hide m-3" onclick="editListName()">
+            <i>
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+              </svg>
+            </i>
+          </div>
+          <span class="task-cnt text-center">{{ list.task_cnt }}</span>
+        </form>
+        <!-- Edit tools -->
+        <div class="edit-tools-bar">
+          <!-- copy list -->
+          <a type="button" class="btn btn-outline-secondary edit-tools" href="{{ url_for('copy_list', url_key=list.url_key) }}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-copy" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z"/>
+            </svg>
+          </a>
+          <!-- Archive list -->
+          <a type="button" class="btn btn-outline-secondary edit-tools" href="{{ url_for('archive_list', url_key=list.url_key) }}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-archive" viewBox="0 0 16 16">
+              <path d="M0 2a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 12.5V5a1 1 0 0 1-1-1V2zm2 3v7.5A1.5 1.5 0 0 0 3.5 14h9a1.5 1.5 0 0 0 1.5-1.5V5H2zm13-3H1v2h14V2zM5 7.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
+            </svg>
+          </a>
+
+          <!-- Delete list -->
+          <a type="button" class="btn btn-outline-secondary edit-tools" href="{{ url_for('del_list', url_key=list.url_key) }}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+              <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"></path>
+              <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"></path>
+            </svg>
+          </a>
+        </div>
+      </header>
+      <!-- Area for flash messages -->
+      <!-- <div id="flash-msg-div" class="flash-msg text-center {% if get_flashed_messages(category_filter=['success']) %}success-clear{% endif %}">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div id="flash-messages" class="{% if category =='success' %}success-clear{% else %}alert-clear{% endif %}">
+                <span class="flash-message">{{ message }}</span>
+              </div>
+            {% endfor %}
+          {% else %}
+            <div id="default-msg" class="d-flex">
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-exclamation-circle" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
+              </svg>
+              <p style="padding: 15px 0 0 15px;">Create tasks below, Hit Enter key to submit.</p>
+            </div>
+          {% endif %}
+        {% endwith %}
+      </div> -->
+      <!-- Create new task area -->
+      <div id="newTask" class="new-task no-border">
+        <form id="taskForm" name="taskform" action="{{ url_for('new_task', url_key=list.url_key) }}" method="post">
+          {{ form.hidden_tag() }}
+          {{ form.name(id="taskInput", class="form-control", placeholder="Write your task here...", title="Please fill out this field", autofocus=True) }}
+          {{ form.submit(id="submitBtn", type="button", style="display: none;") }}
+        </form>
+      </div>
+      <!-- Area to show all tasks under the current list -->
+      {% if all_task %}
+        <div class="task-list">
+          {% for task in all_task[::-1] %}
+            <li id="taskName" class="task-item {% if task.status %} completed-task {% endif %}">
+              <!-- 添加完成勾选框 -->
+              <form class="complete-task" action="{{ url_for('complete', url_key=list.url_key, id=task.id)}}" method="post"">
+                {{ form.hidden_tag() }}
+                <input type="checkbox" class="checkbox" name="status" {% if task.status %} checked {% endif %} onchange="this.form.submit()">
+              </form>
+              <!-- Show task name, edit button -->
+              <form action="{{ url_for('edit_t_name', url_key=list.url_key, id=task.id )}}" method="post">
+                {{ form.hidden_tag() }}
+                <h5 class="taskNameDisplay m-3">{{ task.name }}</h5>
+                <input type="text" name="new-t-name" class="taskNameEdit form-control m-3" style="display: none;" value="{{ task.name }}">
+                <input type="submit" style="display: none">
+              </form>
+              <div class="hide" onclick="editTaskName(this)">
+                <i>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                  </svg>
+                </i>
+              </div>
+              <!-- Add Due Date -->
+              <form class="due-date text-center m-3" id="newDate" action="{{ url_for('new_date', url_key=list.url_key, id=task.id) }}" method="post">
+                {{ form.hidden_tag() }}
+                {% if not task.due_date %}
+                  {{ form.due_date(id="dueDateInput", class="due-date-input", style="{% if task.status %} text-decoration: line-through; {% endif %}", placeholder="No Due Date") }}
+                {% else %}
+                  {{ form.due_date(id="dueDateInput", class="due-date-input", style="{% if task.status %} text-decoration: line-through; {% endif %}", placeholder=task.due_date) }}
+                {% endif %}
+              </form>
+              <div class="task-tools">
+                <!-- Add star(Favorit) -->
+                <a href="{{ url_for('check_favorit', url_key=list.url_key, id=task.id) }}">
+                  {% if task.favorit == True %}
+                  <span class="favorit-checkbox" id="basic-addon1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                      <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                    </svg>
+                  </span>
+                  {% else %}
+                  <span class="favorit-checkbox" id="basic-addon1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-star hide" viewBox="0 0 16 16">
+                      <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+                    </svg>
+                  </span>
+                  {% endif %}
+                </a>
+                <!-- Delete task button -->
+                <a class="del-task hide" href="{{ url_for('del_task', url_key=list.url_key, id=task.id) }}">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                  </svg>
+                </a>
+              </div>
+            </li>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p style="padding: 260px 120px;">No task yet</p>
+      {% endif %}
+    </div>
+</main>
+{% endblock %}
